@@ -15,5 +15,23 @@ dependencies {
 }
 
 test {
-    useTestNG()
+    useTestNG() {
+
+        useDefaultListeners true
+
+        if (!project.hasProperty("suiteName"))
+            suites "src/test/resources/suites/suite.xml"
+        else
+            suites "src/test/resources/suites/" + project.property("suiteName") + ".xml"
+    }
 }
+
+task retest(type: Test) {
+    useTestNG() {
+        suites "build/reports/tests/test/testng-failed.xml"
+
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
